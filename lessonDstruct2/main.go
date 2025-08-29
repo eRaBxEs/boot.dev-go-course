@@ -4,6 +4,11 @@ import (
 	"fmt"
 )
 
+/* Take away :
+1. Only being used once
+2. Anonymous struct prevent you from re-using a struct definition you never intended to re-use
+*/
+
 func main() {
 	// create an stand alone anonymous struct
 	myCar := struct {

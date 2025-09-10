@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+)
+
 /*
 Message Tagger
 Textio needs a way to tag messages based on specific criteria.
@@ -37,12 +42,51 @@ type sms struct {
 }
 
 func tagMessages(messages []sms, tagger func(sms) []string) []sms {
-	// ?
-	return []sms{}
+	for i, msg := range messages {
+		messages[i].tags = tagger(msg)
+	}
+	return messages
 }
 
 func tagger(msg sms) []string {
-	// tags
-	_ = []string{}
-	return []string{}
+
+	tags := []string{}
+	if strings.Contains(strings.ToLower(msg.content), "urgent") {
+		tags = append(tags, "[Urgent]")
+	}
+	if strings.Contains(strings.ToLower(msg.content), "sale") {
+		tags = append(tags, "[Promo]")
+	}
+
+	return tags
+}
+
+func test(message []sms, tagger func(sms) []string) {
+	defer fmt.Println("================================================")
+	fmt.Println("A brief view of some of the messages:")
+	fmt.Println("=======================   BEFORE ADJUSTMENT  =========================")
+
+	for i, _ := range message {
+		fmt.Printf("The [%v] message before adjustment %#v\n", i, message[i])
+	}
+	newMessages := tagMessages(message, tagger)
+	fmt.Println("=======================   AFTER ADJUSTMENT  =========================")
+
+	for i, _ := range newMessages {
+		fmt.Printf("The [%v] message before adjustment %#v\n", i, newMessages[i])
+	}
+
+}
+
+func main() {
+	messages := []sms{
+		{id: "001", content: "Urgent! Last chance to see!", tags: []string{}},
+		{id: "002", content: "Big sale on all items!", tags: []string{}},
+		{id: "003", content: "General urGenT is a big sale", tags: []string{}},
+		{id: "004", content: "Great SaLE is what we consider", tags: []string{}},
+		{id: "005", content: "Return SAle if URgenT", tags: []string{}},
+	}
+
+	test(messages, tagger)
+
 }

@@ -19,12 +19,12 @@ Like slices, maps are also passed by reference into functions. This means that w
 
 func deleteIfNecessary(users map[string]user, name string) (deleted bool, err error) {
 
-	elem, ok := users[name]
+	existingUser, ok := users[name]
 	if !ok {
 		return false, errors.New("not found")
 	}
 
-	if !elem.scheduledForDeletion {
+	if !existingUser.scheduledForDeletion {
 		return false, nil
 	}
 

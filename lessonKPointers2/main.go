@@ -29,10 +29,12 @@ func removeProfanity(message *string) {
 }
 
 func test(messages []string) {
-	for _, message := range messages {
-		removeProfanity(&message)
-		fmt.Println(message)
+	for i := range messages { // accessing via index enables one to avoid error by copying value
+		removeProfanity(&messages[i])
+		fmt.Println(messages[i])
 	}
+
+	fmt.Println(messages)
 }
 
 func main() {
